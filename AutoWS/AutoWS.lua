@@ -14,7 +14,6 @@ _libs.lor.req('all')
 _libs.lor.debug = false
 
 local rarr = string.char(129, 168)
-local bags = { [0] = 'inventory', [8] = 'wardrobe', [10] = 'wardrobe2', [11] = 'wardrobe3', [12] = 'wardrobe4' }
 
 local hps, mobs
 local enabled = false
@@ -27,6 +26,16 @@ local defaults = { hps = { ['<'] = 100, ['>'] = 5 } }
 settings = _libs.lor.settings.load('data/settings.lua', defaults)
 local settings_loaded = false
 
+-- get an assoc-array of all equippable bags.
+local bags = (function()
+    local t = {}
+    for i = 0, #res.bags do
+        if res.bags[i].equippable then
+            table.insert(t, i, res.bags[i].command)
+        end
+    end
+    return t
+end)()
 
 local function weap_type()
     local items = windower.ffxi.get_items()
